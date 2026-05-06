@@ -1,44 +1,52 @@
-// src/components/SearchHero.jsx
-export function SearchHero({
-  search,
-  setSearch,
-  selectedRegion,
-  setSelectedRegion,
-  regions,
-  selectedCategory,
-  setSelectedCategory,
-  categories,
+import { useDebounce } from "../hooks/useDebounce";
+
+function SearchHero({
+  keyword,
+  setKeyword,
 }) {
+
+  const debouncedKeyword = useDebounce(keyword, 500);
+
   return (
-    <section>
-      <input
-        type="text"
-        placeholder="Search events..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <section className="search-hero">
 
-      <select
-        value={selectedRegion}
-        onChange={(e) => setSelectedRegion(e.target.value)}
-      >
-        {regions.map((region) => (
-          <option key={region.value} value={region.value}>
-            {region.label}
-          </option>
-        ))}
-      </select>
+      <div className="hero-content">
 
-      <select
-        value={selectedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
-      >
-        {categories.map((category) => (
-          <option key={category.value} value={category.value}>
-            {category.label}
-          </option>
-        ))}
-      </select>
+        <h1>
+          Discover Live Events Worldwide
+        </h1>
+
+        <p>
+          Search concerts, sports, theatre,
+          festivals, venues and artists powered
+          by the Ticketmaster Discovery API.
+        </p>
+
+        <div className="search-wrapper">
+
+          <input
+            type="text"
+            placeholder="Search artists, venues, cities, events..."
+            value={keyword}
+            onChange={(e) =>
+              setKeyword(e.target.value)
+            }
+          />
+
+        </div>
+
+        <span className="search-status">
+
+          {debouncedKeyword
+            ? `Searching for "${debouncedKeyword}"`
+            : "Trending live events"}
+
+        </span>
+
+      </div>
+
     </section>
   );
 }
+
+export default SearchHero;

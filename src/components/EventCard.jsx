@@ -1,52 +1,96 @@
-// src/components/EventCard.jsx
-export function EventCard({ event, onSave, isSaved }) {
-  const fallbackImage =
-    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1200&auto=format&fit=crop';
+function EventCard({ event }) {
 
   return (
     <article className="event-card">
-      <img
-        src={event.image || fallbackImage}
-        alt={event.title}
-        onError={(e) => {
-          e.currentTarget.src = fallbackImage;
-        }}
-      />
 
-      <div className="event-card-content">
-        <p>
-          {event.date}
-          {event.time ? ` • ${event.time}` : ''}
-        </p>
+      <div className="event-image-wrapper">
 
-        <h2>{event.title}</h2>
-        <p>{event.venue}</p>
+        <img
+          src={event.image}
+          alt={event.title}
+          className="event-image"
+        />
 
-        <p>
-          {event.city}
-          {event.country ? ` • ${event.country}` : ''}
-        </p>
+        <div className={`event-status ${event.status}`}>
+          {event.status}
+        </div>
 
-        <p>
-          {event.segment}
-          {event.genre ? ` • ${event.genre}` : ''}
-        </p>
+      </div>
 
-        {event.priceMin !== null && event.priceMax !== null && (
+      <div className="event-content">
+
+        <div className="event-tags">
+
+          {event.segment && (
+            <span className="event-tag">
+              {event.segment}
+            </span>
+          )}
+
+          {event.genre && (
+            <span className="event-tag secondary">
+              {event.genre}
+            </span>
+          )}
+
+        </div>
+
+        <h3>{event.title}</h3>
+
+        <div className="event-meta">
+
           <p>
-            {event.currency} {event.priceMin} - {event.priceMax}
+             {event.date}
+            {event.time && ` • ${event.time}`}
+          </p>
+
+          <p>
+             {event.venue}
+          </p>
+
+          <p>
+            {event.city}
+            {event.country && `, ${event.country}`}
+          </p>
+
+        </div>
+
+        {(event.priceMin || event.priceMax) && (
+          <p className="event-price">
+
+            {event.currency}
+
+            {" "}
+
+            {event.priceMin}
+
+            {event.priceMax &&
+              ` - ${event.priceMax}`}
+
           </p>
         )}
 
-        <div className="event-card-actions">
-          <a href={event.url} target="_blank" rel="noreferrer">
-            View Event
+        <div className="event-actions">
+
+          <a
+            href={event.url}
+            target="_blank"
+            rel="noreferrer"
+            className="ticket-btn"
+          >
+            Get Tickets
           </a>
-          <button onClick={() => onSave(event)}>
-            {isSaved ? 'Saved' : 'Save'}
+
+          <button className="save-btn">
+            Save
           </button>
+
         </div>
+
       </div>
+
     </article>
   );
 }
+
+export default EventCard;
