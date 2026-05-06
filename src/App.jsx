@@ -1,85 +1,77 @@
 // src/App.jsx
-import { useMemo, useState } from 'react';
-import { REGIONS, CATEGORIES } from './utils/constants';
-import { useEvents } from './hooks/useEvents';
-import { useDebounce } from './hooks/useDebounce';
-import { useLocalStorage } from './hooks/useLocalStorage';
-import { SearchHero } from './components/SearchHero';
-import { EventGrid } from './components/EventGrid';
-import { Loader, ErrorState, EmptyState } from './components/ui/StateViews';
+import { useMemo, useState } from "react";
+import "./App.css";
+
+import Navbar from "./components/NavBar";
+import SearchHero from "./components/SearchHero";
+import FilterBar from "./components/FilterBar";
+import EventGrid from "./components/EventGrid";
+
+import { REGIONS, CATEGORIES } from "./utils/constants";
+import { useEvents } from "./hooks/useEvents";
+import { useDebounce } from "./hooks/useDebounce";
 
 export default function App() {
-  const [search, setSearch] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('global');
-  const [selectedCategory, setSelectedCategory] = useState('general');
-  const [savedEvents, setSavedEvents] = useLocalStorage('saved-events', []);
+  const [keyword, setKeyword] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("global");
+  const [selectedCategory, setSelectedCategory] = useState("general");
 
-  const debouncedSearch = useDebounce(search, 500);
+  const debouncedKeyword = useDebounce(keyword, 500);
 
+  // Get selected region + category objects
   const activeRegion = useMemo(
-    () => REGIONS.find((region) => region.value === selectedRegion) || REGIONS[0],
+    () =>
+      REGIONS.find((r) => r.value === selectedRegion) || REGIONS[0],
     [selectedRegion]
   );
 
   const activeCategory = useMemo(
     () =>
-      CATEGORIES.find((category) => category.value === selectedCategory) ||
+      CATEGORIES.find((c) => c.value === selectedCategory) ||
       CATEGORIES[0],
     [selectedCategory]
   );
 
-  const { events, loading, error, loadingMore, hasMore, loadMore } = useEvents({
-    keyword: debouncedSearch,
+  // Fetch events
+  const {
+    events,
+    loading,
+    error,
+    loadingMore,
+    hasMore,
+    loadMore,
+  } = useEvents({
+    keyword: debouncedKeyword,
     countryCode: activeRegion.countryCode,
     segmentName: activeCategory.segmentName,
   });
 
-  function handleSave(event) {
-    const exists = savedEvents.some((item) => item.id === event.id);
-    if (!exists) {
-      setSavedEvents((prev) => [...prev, event]);
-    }
-  }
-
   return (
-    <main>
-      <h1>Events</h1>
+    <>
+      <Navbar />
 
       <SearchHero
-        search={search}
-        setSearch={setSearch}
-        selectedRegion={selectedRegion}
-        setSelectedRegion={setSelectedRegion}
-        regions={REGIONS}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        categories={CATEGORIES}
+        keyword={keyword}
+        setKeyword={setKeyword}
       />
 
-      {loading && <Loader />}
-      {error && <ErrorState message={error} />}
-      {!loading && !error && events.length === 0 && (
-        <EmptyState
-          regionLabel={activeRegion.label}
-          categoryLabel={activeCategory.label}
-        />
-      )}
+      <FilterBar
+        selectedRegion={selectedRegion}
+        setSelectedRegion={setSelectedRegion}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
 
-      {!loading && !error && events.length > 0 && (
-        <>
-          <EventGrid
-            events={events}
-            savedEvents={savedEvents}
-            onSave={handleSave}
-          />
-
-          {hasMore && (
-            <button onClick={loadMore} disabled={loadingMore}>
-              {loadingMore ? 'Loading more...' : 'Load More'}
-            </button>
-          )}
-        </>
-      )}
-    </main>
+      <EventGrid
+        events={events}
+        loading={loading}
+        error={error}
+        hasMore={hasMore}
+        loadMore={loadMore}
+        loadingMore={loadingMore}
+        regionLabel={activeRegion.label}
+        categoryLabel={activeCategory.label}
+      />
+    </>
   );
 }
