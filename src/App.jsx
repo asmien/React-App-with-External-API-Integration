@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import "./App.css";
 
-import Navbar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 import SearchHero from "./components/SearchHero";
 import FilterBar from "./components/FilterBar";
 import EventGrid from "./components/EventGrid";
