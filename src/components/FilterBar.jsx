@@ -1,3 +1,5 @@
+import "./FilterBar.css";
+
 import {
   REGIONS,
   CATEGORIES,

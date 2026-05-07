@@ -1,3 +1,4 @@
+import "./EventGrid.css";
 import EventCard from "./EventCard";
 
 import {

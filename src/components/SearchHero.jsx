@@ -1,50 +1,17 @@
-import { useDebounce } from "../hooks/useDebounce";
+import "./SearchHero.css";
 
-function SearchHero({
-  keyword,
-  setKeyword,
-}) {
-
-  const debouncedKeyword = useDebounce(keyword, 500);
-
+function SearchHero() {
   return (
     <section className="search-hero">
+      <h1>Discover Amazing Events Near You</h1>
+      <p>
+        Find Concerts, Conferences, Festivals, Tech events and unforgettable experiences.
+      </p>
 
-      <div className="hero-content">
-
-        <h1>
-          Discover Live Events Worldwide
-        </h1>
-
-        <p>
-          Search concerts, sports, theatre,
-          festivals, venues and artists powered
-          by the Ticketmaster Discovery API.
-        </p>
-
-        <div className="search-wrapper">
-
-          <input
-            type="text"
-            placeholder="Search artists, venues, cities, events..."
-            value={keyword}
-            onChange={(e) =>
-              setKeyword(e.target.value)
-            }
-          />
-
-        </div>
-
-        <span className="search-status">
-
-          {debouncedKeyword
-            ? `Searching for "${debouncedKeyword}"`
-            : "Trending live events"}
-
-        </span>
-
+      <div className="search-box">
+        <input type="text" placeholder="Search events..." />
+        <button>Search</button>
       </div>
-
     </section>
   );
 }
