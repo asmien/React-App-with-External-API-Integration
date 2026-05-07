@@ -1,4 +1,4 @@
-# 🎟️ EventSphere (Tukio Hub)
+# 🎟️ EventSphere 
 
 A modern **React-based event discovery web application** powered by the **Ticketmaster Discovery API**.
 EventSphere allows users to search, filter, and explore live events such as concerts, sports, theatre, and festivals happening around the world.
@@ -7,7 +7,7 @@ EventSphere allows users to search, filter, and explore live events such as conc
 
 ## 📌 Overview
 
-EventSphere (also referred to as **Tukio Hub / EventPulse**) is designed to solve the problem of scattered event information by providing a **centralized, user-friendly platform** for discovering live events.
+EventSphere is designed to solve the problem of scattered event information by providing a **centralized, user-friendly platform** for discovering live events.
 
 This project is currently **frontend-only (React + Vite)** and integrates directly with the Ticketmaster API to fetch real-time event data.
 
@@ -131,8 +131,8 @@ src/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/Kip-opp/React-App-with-External-API-Integration.git
+cd React-App-with-External-API-Integration
 ```
 
 ---
