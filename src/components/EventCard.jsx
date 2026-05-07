@@ -1,6 +1,10 @@
 import "./EventCard.css";
 
-function EventCard({ event }) {
+function EventCard({
+  event,
+  isSaved,
+  toggleSave,
+}) {
 
   return (
     <article className="event-card">
@@ -13,7 +17,9 @@ function EventCard({ event }) {
           className="event-image"
         />
 
-        <div className={`event-status ${event.status}`}>
+        <div
+          className={`event-status ${event.status}`}
+        >
           {event.status}
         </div>
 
@@ -42,22 +48,27 @@ function EventCard({ event }) {
         <div className="event-meta">
 
           <p>
-             {event.date}
-            {event.time && ` • ${event.time}`}
+            {event.date}
+
+            {event.time &&
+              ` • ${event.time}`}
           </p>
 
           <p>
-             {event.venue}
+            {event.venue}
           </p>
 
           <p>
             {event.city}
-            {event.country && `, ${event.country}`}
+
+            {event.country &&
+              `, ${event.country}`}
           </p>
 
         </div>
 
-        {(event.priceMin || event.priceMax) && (
+        {(event.priceMin ||
+          event.priceMax) && (
           <p className="event-price">
 
             {event.currency}
@@ -83,8 +94,17 @@ function EventCard({ event }) {
             Get Tickets
           </a>
 
-          <button className="save-btn">
-            Save
+          <button
+            className="save-btn"
+            onClick={() =>
+              toggleSave(event)
+            }
+          >
+
+            {isSaved
+              ? "Saved"
+              : "Save"}
+
           </button>
 
         </div>
