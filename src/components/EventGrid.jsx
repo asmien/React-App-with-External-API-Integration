@@ -1,4 +1,5 @@
 import "./EventGrid.css";
+
 import EventCard from "./EventCard";
 
 import {
@@ -16,6 +17,9 @@ function EventGrid({
   loadingMore,
   regionLabel,
   categoryLabel,
+
+  savedEvents,
+  toggleSave,
 }) {
 
   if (loading) {
@@ -24,15 +28,21 @@ function EventGrid({
 
   if (error) {
     return (
-      <ErrorState message={error} />
+      <ErrorState
+        message={error}
+      />
     );
   }
 
   if (events.length === 0) {
     return (
       <EmptyState
-        regionLabel={regionLabel}
-        categoryLabel={categoryLabel}
+        regionLabel={
+          regionLabel
+        }
+        categoryLabel={
+          categoryLabel
+        }
       />
     );
   }
@@ -43,10 +53,23 @@ function EventGrid({
       <div className="event-grid">
 
         {events.map((event) => (
+
           <EventCard
             key={event.id}
             event={event}
+
+            isSaved={
+              savedEvents.some(
+                (saved) =>
+                  saved.id === event.id
+              )
+            }
+
+            toggleSave={
+              toggleSave
+            }
           />
+
         ))}
 
       </div>

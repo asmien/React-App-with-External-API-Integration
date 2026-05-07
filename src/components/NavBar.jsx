@@ -7,9 +7,6 @@ function Navbar() {
       </div>
 
       <nav className="navbar-links">
-        <a href="/">Discover</a>
-        <a href="/">Categories</a>
-        <a href="/">Venues</a>
         <a href="/">Saved</a>
       </nav>
 

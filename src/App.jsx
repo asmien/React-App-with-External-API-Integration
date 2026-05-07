@@ -1,4 +1,5 @@
 // src/App.jsx
+
 import { useMemo, useState } from "react";
 import "./App.css";
 
@@ -8,31 +9,58 @@ import FilterBar from "./components/FilterBar";
 import EventGrid from "./components/EventGrid";
 
 import { REGIONS, CATEGORIES } from "./utils/constants";
+
 import { useEvents } from "./hooks/useEvents";
 import { useDebounce } from "./hooks/useDebounce";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 export default function App() {
-  const [keyword, setKeyword] = useState("");
-  const [selectedRegion, setSelectedRegion] = useState("global");
-  const [selectedCategory, setSelectedCategory] = useState("general");
 
-  const debouncedKeyword = useDebounce(keyword, 500);
+  const [keyword, setKeyword] =
+    useState("");
 
-  // Get selected region + category objects
+  const [
+    selectedRegion,
+    setSelectedRegion,
+  ] = useState("global");
+
+  const [
+    selectedCategory,
+    setSelectedCategory,
+  ] = useState("general");
+
+  // SAVED EVENTS
+  const [
+    savedEvents,
+    setSavedEvents,
+  ] = useLocalStorage(
+    "saved-events",
+    []
+  );
+
+  const debouncedKeyword =
+    useDebounce(keyword, 500);
+
+  // ACTIVE REGION
   const activeRegion = useMemo(
     () =>
-      REGIONS.find((r) => r.value === selectedRegion) || REGIONS[0],
+      REGIONS.find(
+        (r) => r.value === selectedRegion
+      ) || REGIONS[0],
     [selectedRegion]
   );
 
+  // ACTIVE CATEGORY
   const activeCategory = useMemo(
     () =>
-      CATEGORIES.find((c) => c.value === selectedCategory) ||
-      CATEGORIES[0],
+      CATEGORIES.find(
+        (c) =>
+          c.value === selectedCategory
+      ) || CATEGORIES[0],
     [selectedCategory]
   );
 
-  // Fetch events
+  // FETCH EVENTS
   const {
     events,
     loading,
@@ -42,12 +70,43 @@ export default function App() {
     loadMore,
   } = useEvents({
     keyword: debouncedKeyword,
-    countryCode: activeRegion.countryCode,
-    segmentName: activeCategory.segmentName,
+    countryCode:
+      activeRegion.countryCode,
+    segmentName:
+      activeCategory.segmentName,
   });
+
+  // SAVE / UNSAVE EVENT
+  function toggleSave(event) {
+
+    const alreadySaved =
+      savedEvents.some(
+        (saved) =>
+          saved.id === event.id
+      );
+
+    if (alreadySaved) {
+
+      setSavedEvents(
+        savedEvents.filter(
+          (saved) =>
+            saved.id !== event.id
+        )
+      );
+
+    } else {
+
+      setSavedEvents([
+        ...savedEvents,
+        event,
+      ]);
+
+    }
+  }
 
   return (
     <>
+
       <NavBar />
 
       <SearchHero
@@ -56,10 +115,18 @@ export default function App() {
       />
 
       <FilterBar
-        selectedRegion={selectedRegion}
-        setSelectedRegion={setSelectedRegion}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
+        selectedRegion={
+          selectedRegion
+        }
+        setSelectedRegion={
+          setSelectedRegion
+        }
+        selectedCategory={
+          selectedCategory
+        }
+        setSelectedCategory={
+          setSelectedCategory
+        }
       />
 
       <EventGrid
@@ -69,9 +136,41 @@ export default function App() {
         hasMore={hasMore}
         loadMore={loadMore}
         loadingMore={loadingMore}
-        regionLabel={activeRegion.label}
-        categoryLabel={activeCategory.label}
+        regionLabel={
+          activeRegion.label
+        }
+        categoryLabel={
+          activeCategory.label
+        }
+
+        savedEvents={savedEvents}
+        toggleSave={toggleSave}
       />
+
+      {/* SAVED EVENTS */}
+
+      {savedEvents.length > 0 && (
+        <section className="saved-section">
+
+          <h2>
+            Saved Events
+          </h2>
+
+          <EventGrid
+            events={savedEvents}
+            loading={false}
+            error=""
+            hasMore={false}
+            loadingMore={false}
+            loadMore={() => {}}
+
+            savedEvents={savedEvents}
+            toggleSave={toggleSave}
+          />
+
+        </section>
+      )}
+
     </>
   );
 }
