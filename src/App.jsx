@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import "./App.css";
 
-import Navbar from "./components/Navbar";
+import NavBar from "./components/NavBar";
 import SearchHero from "./components/SearchHero";
 import FilterBar from "./components/FilterBar";
 import EventGrid from "./components/EventGrid";
@@ -48,7 +48,7 @@ export default function App() {
 
   return (
     <>
-      <Navbar />
+      <NavBar />
 
       <SearchHero
         keyword={keyword}
