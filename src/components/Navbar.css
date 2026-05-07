@@ -18,6 +18,7 @@
 
 .navbar-logo h2:hover {
   transform: scale(1.02);
+  color: var(--accent-color);
 }
 
 .navbar-links {
