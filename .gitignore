@@ -23,3 +23,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+venv/
+eventsphere-backend/__pycache__/
+eventsphere-backend/*.pyc
+eventsphere-backend/eventsphere.db
+eventsphere-backend/.env
