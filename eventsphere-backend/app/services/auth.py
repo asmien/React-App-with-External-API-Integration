@@ -64,7 +64,10 @@ def authenticate_user(
         )
 
     access_token = create_access_token(
-        subject=str(user.id),
-    )
+    subject=str(user.id),
+    extra_data={
+        "email": user.email,
+    },
+)
 
     return access_token
