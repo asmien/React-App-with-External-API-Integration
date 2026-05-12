@@ -25,7 +25,7 @@ dist-ssr
 *.sw?
 
 venv/
-eventsphere-backend/__pycache__/
-eventsphere-backend/*.pyc
-eventsphere-backend/eventsphere.db
-eventsphere-backend/.env
+backend/__pycache__/
+backend/*.pyc
+backend/eventsphere.db
+backend/.env
