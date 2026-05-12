@@ -12,7 +12,7 @@ from app.repositories.user import get_user_by_email
 
 
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/api/v1/auth/login"
+    tokenUrl="/api/v1/auth/token"
 )
 
 
