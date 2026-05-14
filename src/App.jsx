@@ -1,176 +1,75 @@
 // src/App.jsx
-
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import "./App.css";
-
 import NavBar from "./components/NavBar";
 import SearchHero from "./components/SearchHero";
-import FilterBar from "./components/FilterBar";
 import EventGrid from "./components/EventGrid";
-
-import { REGIONS, CATEGORIES } from "./utils/constants";
-
 import { useEvents } from "./hooks/useEvents";
 import { useDebounce } from "./hooks/useDebounce";
-import { useLocalStorage } from "./hooks/useLocalStorage";
+import { REGIONS, CATEGORIES } from "./utils/constants";
 
-export default function App() {
+function App() {
+  const [keyword, setKeyword] = useState("");
+  const debouncedKeyword = useDebounce(keyword, 500);
+  const [selectedRegion, setSelectedRegion] = useState("global");
+  const [selectedCategory, setSelectedCategory] = useState("general");
 
-  const [keyword, setKeyword] =
-    useState("");
+  const filters = {
+    region: selectedRegion,
+    category: selectedCategory,
+  };
 
-  const [
-    selectedRegion,
-    setSelectedRegion,
-  ] = useState("global");
+  const activeRegion = REGIONS.find((r) => r.value === selectedRegion) || REGIONS[0];
+  const activeCategory = CATEGORIES.find((c) => c.value === selectedCategory) || CATEGORIES[0];
 
-  const [
-    selectedCategory,
-    setSelectedCategory,
-  ] = useState("general");
+  const { events, loading, error, loadingMore, hasMore, loadMore } = useEvents(debouncedKeyword, filters);
 
-  // SAVED EVENTS
-  const [
-    savedEvents,
-    setSavedEvents,
-  ] = useLocalStorage(
-    "saved-events",
-    []
-  );
-
-  const debouncedKeyword =
-    useDebounce(keyword, 500);
-
-  // ACTIVE REGION
-  const activeRegion = useMemo(
-    () =>
-      REGIONS.find(
-        (r) => r.value === selectedRegion
-      ) || REGIONS[0],
-    [selectedRegion]
-  );
-
-  // ACTIVE CATEGORY
-  const activeCategory = useMemo(
-    () =>
-      CATEGORIES.find(
-        (c) =>
-          c.value === selectedCategory
-      ) || CATEGORIES[0],
-    [selectedCategory]
-  );
-
-  // FETCH EVENTS
-  const {
-    events,
-    loading,
-    error,
-    loadingMore,
-    hasMore,
-    loadMore,
-  } = useEvents({
-    keyword: debouncedKeyword,
-    countryCode:
-      activeRegion.countryCode,
-    segmentName:
-      activeCategory.segmentName,
-  });
-
-  // SAVE / UNSAVE EVENT
-  function toggleSave(event) {
-
-    const alreadySaved =
-      savedEvents.some(
-        (saved) =>
-          saved.id === event.id
-      );
-
-    if (alreadySaved) {
-
-      setSavedEvents(
-        savedEvents.filter(
-          (saved) =>
-            saved.id !== event.id
-        )
-      );
-
-    } else {
-
-      setSavedEvents([
-        ...savedEvents,
-        event,
-      ]);
-
+  const handleSearchSubmit = () => {
+    const section = document.getElementById("results-section");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }
+  };
 
   return (
-    <>
-
+    <div className="app">
       <NavBar />
-
-      <SearchHero
-        keyword={keyword}
-        setKeyword={setKeyword}
-      />
-
-      <FilterBar
-        selectedRegion={
-          selectedRegion
-        }
-        setSelectedRegion={
-          setSelectedRegion
-        }
-        selectedCategory={
-          selectedCategory
-        }
-        setSelectedCategory={
-          setSelectedCategory
-        }
-      />
-
-      <EventGrid
-        events={events}
-        loading={loading}
-        error={error}
-        hasMore={hasMore}
-        loadMore={loadMore}
-        loadingMore={loadingMore}
-        regionLabel={
-          activeRegion.label
-        }
-        categoryLabel={
-          activeCategory.label
-        }
-
-        savedEvents={savedEvents}
-        toggleSave={toggleSave}
-      />
-
-      {/* SAVED EVENTS */}
-
-      {savedEvents.length > 0 && (
-        <section className="saved-section">
-
-          <h2>
-            Saved Events
-          </h2>
+      <main>
+        <SearchHero
+          keyword={keyword}
+          setKeyword={setKeyword}
+          filters={filters}
+          onFiltersChange={(nextFilters) => {
+            setSelectedRegion(nextFilters.region);
+            setSelectedCategory(nextFilters.category);
+          }}
+          onSearchSubmit={handleSearchSubmit}
+        />
+        <section id="results-section" className="results-section">
+          <div className="results-status">
+            {loading ? (
+              <p>Loading events...</p>
+            ) : error ? (
+              <p>{error}</p>
+            ) : (
+              <p>
+                Found {events.length} events for {activeCategory.label} in {activeRegion.label}
+              </p>
+            )}
+          </div>
 
           <EventGrid
-            events={savedEvents}
-            loading={false}
-            error=""
-            hasMore={false}
-            loadingMore={false}
-            loadMore={() => {}}
-
-            savedEvents={savedEvents}
-            toggleSave={toggleSave}
+            events={events}
+            isLoading={loading}
+            error={error}
+            hasMore={hasMore}
+            loadMore={loadMore}
+            loadingMore={loadingMore}
           />
-
         </section>
-      )}
-
-    </>
+      </main>
+    </div>
   );
 }
+
+export default App;

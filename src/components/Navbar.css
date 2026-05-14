@@ -1,57 +1,131 @@
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px;
-  background-color: white;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 0.85rem 2rem;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+  color: #1f2937;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .navbar-logo h2 {
-  color: var(--primary-color);
-  font-size: 3rem;
-  font-weight: 700;
-  letter-spacing: -2px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f97316; /* EventSphere orange */
+  margin: 0;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: color 0.25s ease;
 }
 
 .navbar-logo h2:hover {
-  transform: scale(1.02);
-  color: var(--accent-color);
+  color: #ea580c;
 }
 
-.navbar-links {
+.navbar-primary-nav {
   display: flex;
-  gap: 30px;
+  gap: 1.5rem;
 }
 
-.navbar-links a {
-  font-size: 1rem;
+.navbar-primary-nav a {
+  color: #374151;
   font-weight: 500;
-  color: var(--text-color);
-  transition: 0.3s ease;
+  text-decoration: none;
+  transition: color 0.25s ease;
 }
 
-.navbar-links a:hover {
-  color: var(--primary-color);
+.navbar-primary-nav a:hover {
+  color: #f97316;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-secondary-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.navbar-secondary-nav a {
+  color: #4b5563;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.navbar-secondary-nav a:hover {
+  color: #f97316;
+}
+
+.navbar-auth {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar-signin {
+  text-decoration: none;
+  color: #374151;
+  font-weight: 600;
+  transition: color 0.25s ease;
+}
+
+.navbar-signin:hover {
+  color: #f97316;
+}
+
+.navbar-signup {
+  text-decoration: none;
+  background: #f97316;
+  color: white;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  font-weight: 700;
+  transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.navbar-signup:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
   .navbar {
-    flex-direction: column;
-    gap: 20px;
-
-    padding: 20px;
-  }
-
-  .navbar-links {
+    padding: 0.85rem 1rem;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    gap: 0.75rem;
   }
 
-  .navbar-logo h2 {
-    font-size: 2.3rem;
+  .navbar-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .navbar-primary-nav {
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  .navbar-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navbar-secondary-nav {
+    display: none;
   }
 }
