@@ -10,19 +10,14 @@ import {
 
 function EventGrid({
   events,
-  loading,
+  isLoading,
   error,
   hasMore,
   loadMore,
   loadingMore,
-  regionLabel,
-  categoryLabel,
-
-  savedEvents,
-  toggleSave,
 }) {
 
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -35,16 +30,7 @@ function EventGrid({
   }
 
   if (events.length === 0) {
-    return (
-      <EmptyState
-        regionLabel={
-          regionLabel
-        }
-        categoryLabel={
-          categoryLabel
-        }
-      />
-    );
+    return <EmptyState />;
   }
 
   return (
@@ -53,23 +39,12 @@ function EventGrid({
       <div className="event-grid">
 
         {events.map((event) => (
-
           <EventCard
             key={event.id}
             event={event}
-
-            isSaved={
-              savedEvents.some(
-                (saved) =>
-                  saved.id === event.id
-              )
-            }
-
-            toggleSave={
-              toggleSave
-            }
+            isSaved={false}
+            toggleSave={() => {}}
           />
-
         ))}
 
       </div>

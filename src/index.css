@@ -2,11 +2,10 @@
 
 :root {
   --primary-color: #7c3aed;
-  --light-purple: #f3e8ff;
   --accent-color: #ec4899;
-  --text-color: #1e1e1e;
-  --white: #ffffff;
-  --gray: #6b7280;
+  --text-color: #111827;
+  --bg: #f8fafc;
+  --border: rgba(15, 23, 42, 0.08);
 
   font-family: 'Poppins', sans-serif;
 }
@@ -18,8 +17,15 @@
 }
 
 body {
-  background-color: #f8f9fb;
+  margin: 0;
+  background: var(--bg);
   color: var(--text-color);
+  font-family: Inter, system-ui, sans-serif;
+}
+
+#root {
+  min-height: 100vh;
+  background: var(--bg);
 }
 
 a {
