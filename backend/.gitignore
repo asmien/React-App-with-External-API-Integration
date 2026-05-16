@@ -2,4 +2,5 @@ __pycache__/
 *.pyc
 eventsphere.db
 .env
-../venv/
+../venv/.env
+.env
