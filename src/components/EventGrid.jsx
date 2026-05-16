@@ -1,72 +1,21 @@
-import "./EventGrid.css";
+import "./style/EventGrid.css";
 
 import EventCard from "./EventCard";
 
-import {
-  Loader,
-  ErrorState,
-  EmptyState,
-} from "./ui/StateViews";
-
-function EventGrid({
-  events,
-  isLoading,
-  error,
-  hasMore,
-  loadMore,
-  loadingMore,
-}) {
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    return (
-      <ErrorState
-        message={error}
-      />
-    );
-  }
-
-  if (events.length === 0) {
-    return <EmptyState />;
-  }
-
+function EventGrid({ events, onEventClick, onToast, onCheckoutAuth }) {
   return (
     <section className="events-section">
-
       <div className="event-grid">
-
         {events.map((event) => (
           <EventCard
-            key={event.id}
+            key={event.id || event.name}
             event={event}
-            isSaved={false}
-            toggleSave={() => {}}
+            onClick={onEventClick}
+            onToast={onToast}
+            onCheckoutAuth={onCheckoutAuth}
           />
         ))}
-
       </div>
-
-      {hasMore && (
-        <div className="load-more-wrapper">
-
-          <button
-            className="load-more-btn"
-            onClick={loadMore}
-            disabled={loadingMore}
-          >
-
-            {loadingMore
-              ? "Loading..."
-              : "Load More Events"}
-
-          </button>
-
-        </div>
-      )}
-
     </section>
   );
 }
