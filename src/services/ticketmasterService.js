@@ -45,11 +45,15 @@ export async function fetchEvents({
   page = 0,
   size = 12,
   sort = 'date,asc',
+  startDateTime = '',
+  endDateTime = '',
 }) {
   const url = buildUrl('/events.json', {
     ...(keyword ? { keyword } : {}),
     ...(countryCode ? { countryCode } : {}),
     ...(segmentName ? { segmentName } : {}),
+    ...(startDateTime ? { startDateTime } : {}),
+    ...(endDateTime ? { endDateTime } : {}),
     page,
     size,
     sort,

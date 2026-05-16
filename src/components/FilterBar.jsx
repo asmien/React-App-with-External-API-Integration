@@ -1,4 +1,4 @@
-import "./FilterBar.css";
+import "./style/FilterBar.css";
 
 import {
   REGIONS,
