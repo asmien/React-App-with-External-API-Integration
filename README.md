@@ -29,13 +29,13 @@ The platform combines external event APIs, custom local event management, authen
 ## ⚙️ Backend Features
 
 - Flask REST API architecture
-- PostgreSQL database integration
+- SQLite database integration
+- Planned PostgreSQL migration support
 - SQLAlchemy ORM
 - Authentication system
 - Token-based authorization
 - CRUD functionality for events
 - Saved events functionality
-- Recommendation system
 - External API integrations
 - Global exception handling
 - Environment configuration support
@@ -64,8 +64,8 @@ The platform combines external event APIs, custom local event management, authen
 | Flask | Backend framework |
 | SQLAlchemy | ORM |
 | Flask-Migrate | Database migrations |
-| PostgreSQL | Production database |
-| SQLite | Initial development database |
+| SQLite | Current development database |
+| PostgreSQL | Planned production database |
 | Alembic | Migration management |
 | Python | Backend programming |
 
@@ -246,7 +246,7 @@ pip install -r requirements.txt
 Create a `.env` file inside the backend folder:
 
 ```env
-DATABASE_URL=postgresql://username:password@localhost/eventsphere
+DATABASE_URL=sqlite:///app.db
 SECRET_KEY=your_secret_key
 
 EVENTBRITE_PRIVATE_TOKEN=your_token
@@ -310,11 +310,11 @@ SQLite was initially used during backend development because it:
 - enabled faster testing
 - reduced configuration overhead
 
-PostgreSQL was later integrated for:
-- production-ready scalability
-- relational database support
+PostgreSQL is planned for future deployment because it provides:
+- better scalability
+- stronger relational database support
 - improved concurrency handling
-- realistic deployment architecture
+- production-ready database architecture
 
 ---
 
@@ -326,12 +326,9 @@ PostgreSQL was later integrated for:
 - Backend security
 - User models and schemas
 - Shared backend dependencies
-- CRUD event endpoints
 - Saved events system
 - Ticket purchase logic
-- Recommendation logic
 - Global exception handling
-- PostgreSQL migration support
 - API integrations
 
 ---
@@ -354,6 +351,7 @@ PostgreSQL was later integrated for:
 # 🔮 Future Improvements
 
 - Pagination
+- Cloud deployment
 - Dark mode
 - User profile editing
 - Real-time notifications
@@ -365,8 +363,8 @@ PostgreSQL was later integrated for:
 
 | Team Member | Contributions |
 |---|---|
-| **Samantha** | Built `App.jsx` and `main.jsx`, managed application state and frontend integration, implemented backend authentication system, configured backend security, created shared dependencies, implemented authentication logic, created user models/schemas, built authentication endpoints, configured backend logging, created backend documentation, PostgreSQL integration, environment configuration, and contributed to UI redesign |
-| **Sharon** | Designed and styled the frontend user interface, created event database models/schemas/repositories, implemented event service logic, integrated Eventbrite and event management functionality, built event API endpoints, and contributed recommendation system logic |
+| **Samantha** | Built `App.jsx` and `main.jsx`, managed application state and frontend integration, implemented backend authentication system, configured backend security, created shared dependencies, implemented authentication logic, created user models/schemas, built authentication endpoints, configured backend logging, created backend documentation, environment configuration support, and contributed to UI redesign |
+| **Sharon** | Designed and styled the frontend user interface, created event database models/schemas/repositories, implemented event service logic, built event API endpoints, and contributed recommendation system logic |
 | **Denis** | Implemented Ticketmaster API integration, handled frontend data fetching logic, created ticket database models/schemas/repositories, implemented ticket purchase logic, and built ticket API endpoints |
 | **Engine** | Developed reusable React components, structured frontend component architecture, created saved event database models/schemas/repositories, implemented saved event logic, and built saved events API endpoints |
 
