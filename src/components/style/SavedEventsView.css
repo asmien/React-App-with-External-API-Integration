@@ -1,50 +1,57 @@
 .saved-events-view {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 3rem 5vw 5rem;
+  min-height: 80vh;
+  background: #faf7ff;
 }
 
 .view-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1rem;
   margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid #f0f0f0;
+  padding: 2rem;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top left, rgba(236, 72, 153, 0.2), transparent 35%),
+    linear-gradient(135deg, #2e1065, #7c3aed);
+  color: white;
+  box-shadow: 0 25px 70px rgba(124, 58, 237, 0.22);
 }
 
 .view-header h1 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 2rem;
+  margin: 0 0 0.45rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
 }
 
 .view-header p {
   margin: 0;
-  color: #666;
-  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .close-view-btn {
-  padding: 0.75rem 1.5rem;
-  background: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-weight: 600;
+  padding: 0.85rem 1.35rem;
+  background: white;
+  color: #2e1065;
+  border: none;
+  border-radius: 999px;
+  font-weight: 900;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: 0.25s ease;
 }
 
 .close-view-btn:hover {
-  background: #e0e0e0;
-  border-color: #ccc;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(255, 255, 255, 0.18);
 }
 
 @media (max-width: 768px) {
   .view-header {
     flex-direction: column;
-    gap: 1rem;
   }
 
   .close-view-btn {

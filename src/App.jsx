@@ -15,6 +15,13 @@ import authService from './services/authService';
 import { useEvents } from './hooks/useEvents';
 import { useDebounce } from './hooks/useDebounce';
 
+const QUICK_CATEGORIES = [
+  { key: 'all', label: 'All Events', icon: '🌐' },
+  { key: 'ticketmaster', label: 'Concerts', icon: '🎤' },
+  { key: 'eventbrite', label: 'Experiences', icon: '🎫' },
+  { key: 'local', label: 'Community', icon: '🏠' },
+];
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -23,22 +30,34 @@ function App() {
   const [activeSource, setActiveSource] = useState('all');
   const [pendingEvent, setPendingEvent] = useState(null);
   const [toast, setToast] = useState(null);
+
   const debouncedSearch = useDebounce(searchQuery, 500);
   const createFormRef = useRef(null);
   const eventsRef = useRef(null);
+
+  const { events, loading, error, total, refetch } = useEvents(
+    debouncedSearch,
+    activeSource
+  );
+
+  const featuredEvent = events?.[0];
+  const previewEvents = events?.slice(0, 4) || [];
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
   };
 
-  const handleSourceChange = (source) => {
-    setActiveSource(source);
-    if (eventsRef.current) {
-      eventsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  const scrollToEvents = () => {
+    setTimeout(() => {
+      eventsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   };
 
-  const { events, loading, error, total, refetch } = useEvents(debouncedSearch, activeSource);
+  const handleSourceChange = (source) => {
+    setActiveSource(source);
+    setCurrentView('all-events');
+    scrollToEvents();
+  };
 
   useEffect(() => {
     if (currentView === 'create' && createFormRef.current) {
@@ -49,9 +68,7 @@ function App() {
   const handleSearch = (query) => {
     setSearchQuery(query);
     setCurrentView('all-events');
-    setTimeout(() => {
-      eventsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+    scrollToEvents();
   };
 
   const handleEventCreated = () => {
@@ -76,24 +93,13 @@ function App() {
     }
   };
 
-  const handleCloseDetails = () => {
-    setSelectedEvent(null);
-  };
-
   const handleCreateEventClick = () => {
     if (!authService.isAuthenticated()) {
       setShowAuthModal(true);
       return;
     }
+
     setCurrentView('create');
-  };
-
-  const handleMyEventsClick = () => {
-    setCurrentView('my-events');
-  };
-
-  const handleSavedEventsClick = () => {
-    setCurrentView('saved-events');
   };
 
   const handleBackToAllEvents = () => {
@@ -103,24 +109,35 @@ function App() {
 
   return (
     <div className="app">
-      <NavBar 
+      <NavBar
         onCreateEventClick={handleCreateEventClick}
-        onMyEventsClick={handleMyEventsClick}
-        onSavedEventsClick={handleSavedEventsClick}
+        onMyEventsClick={() => setCurrentView('my-events')}
+        onSavedEventsClick={() => setCurrentView('saved-events')}
         activeSource={activeSource}
         onSourceChange={handleSourceChange}
         onLogout={() => showToast('Logged out successfully', 'info')}
-        onAuthSuccess={(action) => showToast(action === 'login' ? 'Welcome back!' : 'Account created successfully!', 'success')}
+        onAuthSuccess={(action) =>
+          showToast(
+            action === 'login' ? 'Welcome back!' : 'Account created successfully!',
+            'success'
+          )
+        }
       />
 
       {currentView === 'all-events' && (
-        <SearchHero onSearch={handleSearch} />
+        <SearchHero
+          onSearch={handleSearch}
+          featuredEvent={featuredEvent}
+          previewEvents={previewEvents}
+          onExploreClick={scrollToEvents}
+          onCategoryClick={handleSourceChange}
+          activeSource={activeSource}
+        />
       )}
 
       <main className="main-content">
-        {/* Create Event View */}
         {currentView === 'create' && authService.isAuthenticated() && (
-          <div ref={createFormRef}>
+          <div ref={createFormRef} className="view-shell">
             <CreateEventForm
               onEventCreated={handleEventCreated}
               onCancel={handleBackToAllEvents}
@@ -128,46 +145,72 @@ function App() {
           </div>
         )}
 
-        {/* My Events View */}
         {currentView === 'my-events' && (
-          <MyEventsView 
+          <MyEventsView
             onEventClick={handleEventClick}
             onClose={handleBackToAllEvents}
           />
         )}
 
-        {/* Saved Events View */}
         {currentView === 'saved-events' && (
-          <SavedEventsView 
+          <SavedEventsView
             onEventClick={handleEventClick}
             onClose={handleBackToAllEvents}
           />
         )}
 
-        {/* All Events View */}
         {currentView === 'all-events' && (
           <div ref={eventsRef}>
+            <section className="discovery-panel">
+              <div className="discovery-panel__header">
+                <div>
+                  <span className="section-eyebrow">Browse by mood</span>
+                  <h2>Find the next event worth leaving the house for.</h2>
+                </div>
+
+                <button className="create-event-pill" onClick={handleCreateEventClick}>
+                  + Create Event
+                </button>
+              </div>
+
+              <div className="category-strip">
+                {QUICK_CATEGORIES.map((category) => (
+                  <button
+                    key={category.key}
+                    className={`category-card ${
+                      activeSource === category.key ? 'active' : ''
+                    }`}
+                    onClick={() => handleSourceChange(category.key)}
+                  >
+                    <span>{category.icon}</span>
+                    <strong>{category.label}</strong>
+                    <small>
+                      {category.key === 'all'
+                        ? 'Everything'
+                        : category.key === 'local'
+                          ? 'Local picks'
+                          : 'Live events'}
+                    </small>
+                  </button>
+                ))}
+              </div>
+            </section>
+
             <div className="events-controls">
               {!loading && !error && events.length > 0 && (
                 <div className="results-header">
-                  <h2>{total} Events Found</h2>
+                  <span className="section-eyebrow">Live results</span>
+                  <h2>{total} events found</h2>
                 </div>
               )}
             </div>
 
             {loading && <Loader />}
 
-            {error && (
-              <ErrorState
-                message={error}
-                onRetry={refetch}
-              />
-            )}
+            {error && <ErrorState message={error} onRetry={refetch} />}
 
             {!loading && !error && events.length === 0 && (
-              <EmptyState
-                message="No events found. Try a different search or create your first event!"
-              />
+              <EmptyState message="No events found. Try a different search or create your first event!" />
             )}
 
             {!loading && !error && events.length > 0 && (
@@ -188,7 +231,7 @@ function App() {
           eventId={selectedEvent.id}
           eventSource={selectedEvent.source}
           eventData={selectedEvent.source !== 'local' ? selectedEvent : null}
-          onClose={handleCloseDetails}
+          onClose={() => setSelectedEvent(null)}
         />
       )}
 
@@ -202,19 +245,22 @@ function App() {
             setShowAuthModal(false);
             window.dispatchEvent(new CustomEvent('auth-change'));
             showToast('Welcome back!', 'success');
+
             if (pendingEvent) {
-              if (pendingEvent.eventbriteId) {
-                if (pendingEvent.eventUrl) {
-                  window.open(pendingEvent.eventUrl, '_blank', 'noopener,noreferrer');
-                }
+              if (pendingEvent.eventbriteId && pendingEvent.eventUrl) {
+                window.open(pendingEvent.eventUrl, '_blank', 'noopener,noreferrer');
               } else {
                 setSelectedEvent(pendingEvent);
               }
+
               setPendingEvent(null);
             } else {
               setCurrentView('create');
               setTimeout(() => {
-                createFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                createFormRef.current?.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                });
               }, 100);
             }
           }}

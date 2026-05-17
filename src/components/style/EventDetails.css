@@ -1,10 +1,8 @@
 .event-details-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  inset: 0;
+  background: rgba(6, 3, 20, 0.78);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,24 +12,25 @@
 }
 
 .event-details {
-  background: white;
-  border-radius: 12px;
-  max-width: 900px;
+  background: #fff;
+  border-radius: 30px;
+  max-width: 980px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 92vh;
   overflow-y: auto;
   position: relative;
+  box-shadow: 0 35px 110px rgba(0, 0, 0, 0.35);
   animation: slideUp 0.3s ease;
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(45px) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -39,58 +38,63 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: white;
+  background: rgba(255, 255, 255, 0.92);
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
   z-index: 10;
-  transition: all 0.2s;
+  transition: 0.25s ease;
 }
 
 .event-details .close-btn:hover {
-  background: #f0f0f0;
-  transform: rotate(90deg);
+  transform: rotate(90deg) scale(1.05);
 }
 
 .event-source-badge {
   position: absolute;
-  top: 1.5rem;
-  right: 4rem;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  top: 1rem;
+  right: 4.4rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 900;
   backdrop-filter: blur(10px);
   z-index: 10;
 }
 
 .badge-ticketmaster {
-  background: rgba(0, 102, 204, 0.95);
+  background: rgba(37, 99, 235, 0.92);
   color: white;
-  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
 }
 
 .badge-eventbrite {
   background: rgba(240, 85, 55, 0.95);
   color: white;
-  box-shadow: 0 2px 8px rgba(240, 85, 55, 0.3);
 }
 
 .badge-local {
-  background: rgba(76, 175, 80, 0.95);
+  background: rgba(16, 185, 129, 0.95);
   color: white;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
 }
 
 .event-details__hero {
   width: 100%;
-  height: 400px;
+  height: 430px;
   overflow: hidden;
-  border-radius: 12px 12px 0 0;
+  border-radius: 30px 30px 0 0;
+  position: relative;
+  background: linear-gradient(135deg, #2e1065, #7c3aed);
+}
+
+.event-details__hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 3, 25, 0.88), transparent 60%);
 }
 
 .event-details__hero img {
@@ -105,20 +109,18 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2e1065, #7c3aed, #ec4899);
 }
 
 .event-details__hero--placeholder .placeholder-icon {
   font-size: 4rem;
-  opacity: 0.9;
 }
 
 .event-details__hero--placeholder .placeholder-text {
   color: white;
-  font-weight: 700;
+  font-weight: 900;
   font-size: 1.8rem;
   text-align: center;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
   padding: 0 2rem;
 }
 
@@ -127,87 +129,83 @@
 }
 
 .event-details__category {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: #f05537;
+  display: inline-flex;
+  padding: 0.55rem 1rem;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
   color: white;
-  border-radius: 20px;
-  font-size: 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 900;
   margin-bottom: 1rem;
 }
 
 .event-details__title {
-  font-size: 2.5rem;
-  margin: 1rem 0;
-  color: #333;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  margin: 0.8rem 0 1.4rem;
+  color: #111827;
 }
 
 .event-details__info {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
   margin: 2rem 0;
-  padding: 1.5rem;
-  background: #f9f9f9;
-  border-radius: 8px;
+  padding: 1rem;
+  background: #faf7ff;
+  border-radius: 24px;
+  border: 1px solid rgba(124, 58, 237, 0.12);
 }
 
 .info-item {
   display: flex;
-  gap: 1rem;
+  gap: 0.85rem;
   align-items: flex-start;
+  padding: 1rem;
+  background: white;
+  border-radius: 18px;
 }
 
 .info-item .icon {
-  font-size: 1.5rem;
-  min-width: 1.5rem;
+  font-size: 1.35rem;
+  min-width: 1.35rem;
 }
 
 .info-item strong {
   display: block;
-  color: #333;
-  margin-bottom: 0.5rem;
+  color: #2e1065;
+  margin-bottom: 0.35rem;
+  font-weight: 900;
 }
 
 .info-item p {
-  margin: 0.25rem 0;
-  color: #666;
+  margin: 0.2rem 0;
+  color: #6b7280;
 }
 
 .info-item p a {
-  color: #0066cc;
+  color: #7c3aed;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: 800;
 }
 
-.info-item p a:hover {
-  color: #004499;
-  text-decoration: underline;
-}
-
-.event-details__description {
-  margin: 2rem 0;
-}
-
-.event-details__description h2 {
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.event-details__description p {
-  line-height: 1.8;
-  color: #555;
-  white-space: pre-wrap;
-}
-
+.event-details__description,
 .event-details__tickets {
   margin: 2rem 0;
 }
 
+.event-details__description h2,
 .event-details__tickets h2 {
   margin-bottom: 1rem;
-  color: #333;
+  color: #111827;
+  letter-spacing: -0.03em;
+}
+
+.event-details__description p {
+  line-height: 1.8;
+  color: #4b5563;
+  white-space: pre-wrap;
 }
 
 .tickets-list {
@@ -220,114 +218,113 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
-  background: #f9f9f9;
-  border-radius: 8px;
-  border: 1px solid #eee;
+  gap: 1.2rem;
+  padding: 1.3rem;
+  background: #faf7ff;
+  border-radius: 20px;
+  border: 1px solid rgba(124, 58, 237, 0.12);
 }
 
 .ticket-info h3 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
+  margin: 0 0 0.4rem;
+  color: #111827;
 }
 
 .ticket-info p {
   margin: 0.25rem 0;
-  color: #666;
+  color: #6b7280;
   font-size: 0.9rem;
 }
 
 .ticket-availability {
   margin-top: 0.5rem;
   font-size: 0.85rem;
-  color: #999;
+  color: #7c3aed;
+  font-weight: 800;
 }
 
 .ticket-price {
   text-align: right;
 }
 
-.ticket-price .free {
-  color: #28a745;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
+.ticket-price .free,
 .ticket-price .price {
-  color: #f05537;
-  font-weight: bold;
-  font-size: 1.5rem;
+  color: #7c3aed;
+  font-weight: 950;
+  font-size: 1.45rem;
 }
 
 .event-details__action {
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 2px solid #f0f0f0;
+  border-top: 1px solid #eee7ff;
 }
 
 .ticketmaster-cta {
   text-align: center;
   padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
+  background:
+    radial-gradient(circle at top left, rgba(236,72,153,0.18), transparent 35%),
+    linear-gradient(135deg, #f5f3ff, #fff);
+  border-radius: 24px;
 }
 
 .cta-message {
-  margin: 0 0 1.5rem 0;
-  font-size: 1.1rem;
-  color: #333;
-  font-weight: 500;
+  margin: 0 0 1.5rem;
+  font-size: 1.05rem;
+  color: #111827;
+  font-weight: 700;
 }
 
 .ticketmaster-button {
-  display: inline-block;
-  padding: 1rem 2.5rem;
-  background: #0066cc;
+  display: inline-flex;
+  padding: 1rem 2rem;
+  background: #07051f;
   color: white;
   text-decoration: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 102, 204, 0.3);
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 900;
+  transition: 0.25s ease;
 }
 
 .ticketmaster-button:hover {
-  background: #0052a3;
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+  box-shadow: 0 18px 35px rgba(7, 5, 31, 0.25);
 }
 
 .no-checkout-message {
   padding: 1.5rem;
-  background: #f9f9f9;
-  border-radius: 8px;
+  background: #faf7ff;
+  border-radius: 18px;
   text-align: center;
 }
 
 .no-checkout-message p {
   margin: 0;
-  color: #666;
-  font-size: 1rem;
+  color: #6b7280;
 }
 
 @media (max-width: 768px) {
-  .event-details__title {
-    font-size: 2rem;
+  .event-details {
+    border-radius: 22px;
   }
 
   .event-details__hero {
-    height: 250px;
+    height: 260px;
+    border-radius: 22px 22px 0 0;
+  }
+
+  .event-details__content {
+    padding: 1.25rem;
   }
 
   .ticket-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
   }
 
   .ticket-price {
-    width: 100%;
     text-align: left;
   }
 }

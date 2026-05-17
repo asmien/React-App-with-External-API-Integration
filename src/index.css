@@ -1,13 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
   --primary-color: #7c3aed;
   --accent-color: #ec4899;
+  --deep-purple: #2e1065;
+  --dark: #07051f;
   --text-color: #111827;
-  --bg: #f8fafc;
-  --border: rgba(15, 23, 42, 0.08);
+  --muted-text: #6b7280;
+  --bg: #faf7ff;
+  --surface: #ffffff;
+  --border: rgba(124, 58, 237, 0.14);
 
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: var(--text-color);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -16,11 +26,17 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+  min-width: 320px;
+  min-height: 100vh;
   margin: 0;
   background: var(--bg);
   color: var(--text-color);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: 'Poppins', system-ui, sans-serif;
 }
 
 #root {
@@ -34,6 +50,21 @@ a {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(124, 58, 237, 0.25);
+  color: #2e1065;
 }
