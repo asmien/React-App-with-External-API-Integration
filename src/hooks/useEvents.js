@@ -1,111 +1,44 @@
-import { useEffect, useState } from "react";
-import { fetchEvents } from "../services/ticketmasterService";
-import { normalizeTicketmasterEvent } from "../utils/formatters";
-import { REGIONS, CATEGORIES } from "../utils/constants";
+import { useState, useEffect } from "react";
+import eventbriteService from "../services/eventbriteService";
 
-export function useEvents(keyword, filters) {
+export const useEvents = (searchQuery = '', source = 'all') => {
   const [events, setEvents] = useState([]);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [error, setError] = useState("");
-
-  const region = filters?.region ?? "global";
-  const category = filters?.category ?? "general";
+  const [error, setError] = useState(null);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    let ignore = false;
-
-    const activeRegion =
-      REGIONS.find((r) => r.value === region) || REGIONS[0];
-
-    const activeCategory =
-      CATEGORIES.find((c) => c.value === category) || CATEGORIES[0];
-
-    async function loadInitialEvents() {
+    const fetchEvents = async () => {
       setLoading(true);
-      setError("");
+      setError(null);
 
       try {
-        const data = await fetchEvents({
-          keyword,
-          countryCode: activeRegion.countryCode,
-          segmentName: activeCategory.segmentName,
-          page: 0,
-          size: 12,
-          sort: "date,asc",
-        });
-
-        const normalized = (data?.events ?? []).map(normalizeTicketmasterEvent);
-
-        if (!ignore) {
-          setEvents(normalized);
-          setPage(0);
-          setTotalPages(data?.pageInfo?.totalPages ?? 0);
-        }
+        const data = await eventbriteService.searchEvents(searchQuery, source);
+        setEvents(data.events);
+        setTotal(data.total);
       } catch (err) {
-        if (!ignore) {
-          setError(err.message || "Failed to load events");
-          setEvents([]);
-        }
+        setError(err.message);
+        setEvents([]);
       } finally {
-        if (!ignore) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
-    }
-
-    loadInitialEvents();
-
-    return () => {
-      ignore = true;
     };
-  }, [keyword, region, category]);
 
-  async function loadMore() {
-    if (loadingMore || loading) return;
-    if (page + 1 >= totalPages) return;
+    fetchEvents();
+  }, [searchQuery, source]);
 
-    setLoadingMore(true);
-    setError("");
-
+  const refetch = async () => {
+    setLoading(true);
     try {
-      const nextPage = page + 1;
-
-      const activeRegion =
-        REGIONS.find((r) => r.value === region) || REGIONS[0];
-
-      const activeCategory =
-        CATEGORIES.find((c) => c.value === category) || CATEGORIES[0];
-
-      const data = await fetchEvents({
-        keyword,
-        countryCode: activeRegion.countryCode,
-        segmentName: activeCategory.segmentName,
-        page: nextPage,
-        size: 12,
-        sort: "date,asc",
-      });
-
-      const normalized = (data?.events ?? []).map(normalizeTicketmasterEvent);
-
-      setEvents((prev) => [...prev, ...normalized]);
-      setPage(nextPage);
-      setTotalPages(data?.pageInfo?.totalPages ?? 0);
+      const data = await eventbriteService.searchEvents(searchQuery, source);
+      setEvents(data.events);
+      setTotal(data.total);
     } catch (err) {
-      setError(err.message || "Failed to load more events");
+      setError(err.message);
     } finally {
-      setLoadingMore(false);
+      setLoading(false);
     }
-  }
-
-  return {
-    events,
-    loading,
-    error,
-    loadingMore,
-    hasMore: page + 1 < totalPages,
-    loadMore,
   };
-}
+
+  return { events, loading, error, total, refetch };
+};

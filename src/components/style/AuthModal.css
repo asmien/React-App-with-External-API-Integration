@@ -1,0 +1,151 @@
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.auth-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 450px;
+  width: 100%;
+  padding: 2.5rem;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+.auth-modal .close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #999;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.auth-modal .close-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.auth-modal__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-modal__header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.auth-modal__header p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.auth-error {
+  padding: 1rem;
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c33;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.auth-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.auth-modal .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auth-modal .form-group label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.auth-modal .form-group input {
+  padding: 0.875rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.auth-modal .form-group input:focus {
+  outline: none;
+  border-color: #f05537;
+}
+
+.auth-submit-btn {
+  padding: 1rem;
+  background: #f05537;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.2s;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  background: #d94426;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(240, 85, 55, 0.3);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-toggle {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.auth-toggle button {
+  background: none;
+  border: none;
+  color: #f05537;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.auth-toggle button:hover {
+  color: #d94426;
+}
+
+@media (max-width: 768px) {
+  .auth-modal {
+    padding: 2rem 1.5rem;
+  }
+}

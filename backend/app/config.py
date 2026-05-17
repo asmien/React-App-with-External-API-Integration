@@ -1,27 +1,29 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
+from datetime import timedelta
+from dotenv import load_dotenv
 
+load_dotenv()
 
-class Settings(BaseSettings):
-    app_name: str = "EventSphere API"
-    app_version: str = "1.0.0"
-    environment: str = "development"
+class Config:
+    """Application configuration"""
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
+    FLASK_ENV = os.getenv('FLASK_ENV', 'development')
+    
+    # Database
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///events.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # JWT
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'jwt-secret-key-change-in-production')
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
+    
+    # Eventbrite API
+    EVENTBRITE_PRIVATE_TOKEN = os.getenv('EVENTBRITE_PRIVATE_TOKEN')
+    EVENTBRITE_ORG_ID = os.getenv('EVENTBRITE_ORG_ID')
+    EVENTBRITE_API_BASE = 'https://www.eventbriteapi.com/v3'
 
-    database_url: str = "sqlite:///./eventsphere.db"
+    # Ticketmaster API
+    TICKETMASTER_API_KEY = os.getenv('TICKETMASTER_API_KEY')
 
-    jwt_secret_key: str = "change-this-secret-key"
-    jwt_algorithm: str = "HS256"
-    access_token_expire_minutes: int = 60
-
-    ticketmaster_api_key: str = ""
-    ticketmaster_base_url: str = "https://app.ticketmaster.com/discovery/v2"
-
-    frontend_url: str = "http://localhost:5173"
-
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        case_sensitive=False,
-    )
-
-
-settings = Settings()
+    # CORS
+    CORS_ORIGINS = ['http://localhost:5173', 'http://localhost:3000']
