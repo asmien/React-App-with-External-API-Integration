@@ -36,7 +36,7 @@ saved_events_schema = SavedEventSchema(
 @jwt_required()
 def get_saved_events():
 
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     events = (
         SavedEventService
@@ -57,7 +57,7 @@ def get_saved_events():
 @jwt_required()
 def save_event():
 
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     data = request.get_json()
 
@@ -99,7 +99,7 @@ def save_event():
 @jwt_required()
 def unsave_event(saved_event_id):
 
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
 
     deleted = (
         SavedEventService

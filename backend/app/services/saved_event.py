@@ -1,8 +1,8 @@
-from app.models.saved_event import SavedEvent
-
-from app.repositories.saved_event import (
-    SavedEventRepository
+from app.models.saved_event import (
+    SavedEvent
 )
+
+from app.models.user import db
 
 
 class SavedEventService:
@@ -11,35 +11,53 @@ class SavedEventService:
     def get_saved_events(user_id):
 
         return (
-            SavedEventRepository
-            .get_user_saved_events(user_id)
+            SavedEvent.query
+            .filter_by(
+                user_id=int(user_id)
+            )
+            .order_by(
+                SavedEvent.saved_at.desc()
+            )
+            .all()
         )
 
     @staticmethod
-    def save_event(user_id, data):
+    def save_event(
+        user_id,
+        data
+    ):
 
         existing = (
-            SavedEventRepository
-            .find_existing(
-                user_id=user_id,
+            SavedEvent.query
+            .filter_by(
+                user_id=int(user_id),
                 external_event_id=data.get(
                     'external_event_id'
                 ),
-                source=data.get('source')
+                source=data.get(
+                    'source'
+                )
             )
+            .first()
         )
 
         if existing:
-            return None, 'Event already saved'
+            return (
+                None,
+                'Event already saved'
+            )
 
         saved_event = SavedEvent(
-            user_id=user_id,
+
+            user_id=int(user_id),
 
             external_event_id=data.get(
                 'external_event_id'
             ),
 
-            source=data.get('source'),
+            source=data.get(
+                'source'
+            ),
 
             event_name=data.get(
                 'event_name'
@@ -74,12 +92,16 @@ class SavedEventService:
             )
         )
 
-        saved = (
-            SavedEventRepository
-            .save_event(saved_event)
+        db.session.add(
+            saved_event
         )
 
-        return saved, None
+        db.session.commit()
+
+        return (
+            saved_event,
+            None
+        )
 
     @staticmethod
     def unsave_event(
@@ -88,19 +110,21 @@ class SavedEventService:
     ):
 
         saved_event = (
-            SavedEventRepository
-            .get_saved_event_by_id(
-                saved_event_id,
-                user_id
+            SavedEvent.query
+            .filter_by(
+                id=saved_event_id,
+                user_id=int(user_id)
             )
+            .first()
         )
 
         if not saved_event:
             return False
 
-        (
-            SavedEventRepository
-            .delete_event(saved_event)
+        db.session.delete(
+            saved_event
         )
+
+        db.session.commit()
 
         return True
