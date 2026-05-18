@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 
 from app.config import Config
 from app.models.user import db, bcrypt
+from app.routes.saved_events import saved_events_bp
 
 
 def create_app():
