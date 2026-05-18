@@ -1,45 +1,61 @@
-# 🎟️ EventSphere – Full-Stack Event Discovery Platform
+# 🎟️ EventSphere
 
-EventSphere is a modern full-stack event discovery platform that allows users to explore concerts, festivals, conferences, workshops, and local experiences from multiple event providers in one centralized application.
+<div align="center">
 
-The platform combines external event APIs, custom local event management, authentication, saved events functionality, and a responsive user experience powered by a React frontend and Flask backend.
+### Discover. Save. Organize. Experience.
+
+A modern full-stack event discovery and management platform built with **React**, **Flask**, and **PostgreSQL**.
+
+</div>
 
 ---
 
 # ✨ Features
 
-## 🎨 Frontend Features
+## 👤 Authentication & Roles
 
-- Modern responsive landing page
-- Dynamic animated hero section
-- Event search functionality
-- Event source filtering
-- Interactive event cards
-- Event detail modal
-- Saved/favorite events system
-- My Events dashboard
-- Create custom local events
-- Authentication modal
-- Toast notifications
-- Loading and error states
-- Mobile responsive design
+* 🔐 JWT Authentication
+* 👥 Role-based access control
+* 🧑 Regular users
+* 🎤 Organizers
+* 🛡️ Admin dashboard
+* 🔑 Organizer secret access code
 
 ---
 
-## ⚙️ Backend Features
+## 🎫 Event Management
 
-- Flask REST API architecture
-- SQLite database integration
-- Planned PostgreSQL migration support
-- SQLAlchemy ORM
-- Authentication system
-- Token-based authorization
-- CRUD functionality for events
-- Saved events functionality
-- External API integrations
-- Global exception handling
-- Environment configuration support
-- Alembic database migrations
+* 🌍 Browse events from multiple sources
+* 🎵 Ticketmaster integration
+* 🎟️ Eventbrite integration
+* 🏠 Local event creation
+* 📝 Organizer event submissions
+* ✅ Admin approval/rejection workflow
+* 🔍 Event search and filtering
+* 📄 Event details modal
+
+---
+
+## ❤️ User Features
+
+* 💾 Save favorite events
+* ⏰ In-app reminders
+* 🔊 Reminder sound notifications
+* 📝 Custom reminder messages
+* 🗑️ Delete reminders
+* 🌙 Dark mode
+* 📱 Responsive design
+* 🎯 Personalized recommendations
+
+---
+
+## 📊 Analytics & Dashboards
+
+* 📈 Admin analytics dashboard
+* 🎤 Organizer dashboard
+* 👀 Event approval queue
+* 📂 Event status tracking
+* 📉 Category statistics
 
 ---
 
@@ -47,329 +63,371 @@ The platform combines external event APIs, custom local event management, authen
 
 ## Frontend
 
-| Technology | Purpose |
-|---|---|
-| React | Frontend framework |
-| Vite | Frontend tooling |
-| JavaScript | Application logic |
-| CSS3 | Styling and responsive design |
-| Fetch API | API communication |
+| Technology      | Purpose                   |
+| --------------- | ------------------------- |
+| ⚛️ React        | UI Framework              |
+| ⚡ Vite          | Development Server        |
+| 🎨 CSS          | Styling                   |
+| 💾 LocalStorage | Persistent frontend state |
+| 🌐 Fetch API    | API communication         |
 
 ---
 
 ## Backend
 
-| Technology | Purpose |
-|---|---|
-| Flask | Backend framework |
-| SQLAlchemy | ORM |
-| Flask-Migrate | Database migrations |
-| SQLite | Current development database |
-| PostgreSQL | Planned production database |
-| Alembic | Migration management |
-| Python | Backend programming |
-
----
-
-# 🔌 API Integrations
-
-## 🎤 Ticketmaster API
-
-Used for:
-- concerts
-- sports events
-- entertainment events
-
-## 🎫 Eventbrite API
-
-Used for:
-- conferences
-- workshops
-- local experiences
-- community events
-
----
-
-# 🗄️ Database Architecture
-
-## Models
-
-### 👤 User
-Stores:
-- username
-- email
-- password hash
-
-### 📅 Event
-Stores:
-- title
-- description
-- date
-- location
-- category
-- image
-- source
-
-### ❤️ SavedEvent
-Relationship table connecting:
-- users
-- saved events
-
-### 🎟️ Ticket
-Stores:
-- ticket information
-- purchases
-- pricing
-
----
-
-# 🔐 Authentication Features
-
-Users can:
-
-- Register accounts
-- Login/logout
-- Save events
-- Create events
-- Access personalized event data
-
-Authentication includes:
-
-- password hashing
-- protected routes
-- token-based authorization
-
----
-
-# 🔄 CRUD Functionality
-
-| Operation | Supported |
-|---|---|
-| Create | ✅ |
-| Read | ✅ |
-
+| Technology            | Purpose              |
+| --------------------- | -------------------- |
+| 🐍 Flask              | Backend framework    |
+| 🗄️ PostgreSQL        | Database             |
+| 🔑 Flask-JWT-Extended | Authentication       |
+| 🔒 Flask-Bcrypt       | Password hashing     |
+| 🌍 Flask-CORS         | Cross-origin support |
+| 📦 SQLAlchemy         | ORM                  |
+| ✅ Marshmallow         | Validation           |
 
 ---
 
 # 📁 Project Structure
 
-```bash
-React-App-with-External-API-Integration/
+```txt
+EventSphere/
 │
 ├── backend/
 │   ├── app/
-│   ├── migrations/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   ├── __init__.py
+│   │   └── config.py
+│   │
 │   ├── requirements.txt
-│   ├── alembic.ini
 │   └── run.py
 │
 ├── frontend/
-│   ├── src/
 │   ├── public/
-│   ├── package.json
-│   └── vite.config.js
+│   │   └── sound.mp3
+│   │
+│   ├── src/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   └── package.json
 │
-├── README.md
-└── .gitignore
+└── README.md
 ```
 
 ---
 
-# 🚀 Installation & Setup
+# ⚙️ Environment Variables
 
-## 1️⃣ Clone Repository
+## 🔧 Backend `.env`
+
+Create a `.env` file inside:
+
+```txt
+backend/.env
+```
+
+```env
+SECRET_KEY=your-secret-key
+JWT_SECRET_KEY=your-jwt-secret
+
+FLASK_ENV=development
+
+DATABASE_URL=postgresql://eventsphere_user:eventsphere_password@localhost:5432/eventsphere_db
+
+EVENTBRITE_PRIVATE_TOKEN=your-eventbrite-token
+EVENTBRITE_ORG_ID=your-eventbrite-org-id
+
+TICKETMASTER_API_KEY=your-ticketmaster-api-key
+
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=your-admin-password
+
+ORGANIZER_SECRET_CODE=EVENTSPHERE-ORG-2026
+```
+
+---
+
+## 🎨 Frontend `.env`
+
+Create:
+
+```txt
+frontend/.env
+```
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+---
+
+# 🗄️ PostgreSQL Setup
+
+## ▶️ Start PostgreSQL
 
 ```bash
-git clone https://github.com/Kip-opp/React-App-with-External-API-Integration.git
+sudo service postgresql start
+```
+
+---
+
+## 🧠 Open PostgreSQL
+
+```bash
+sudo -u postgres psql
+```
+
+---
+
+## 🏗️ Create Database & User
+
+```sql
+CREATE USER eventsphere_user WITH PASSWORD 'eventsphere_password';
+
+ALTER USER eventsphere_user CREATEDB;
+
+CREATE DATABASE eventsphere_db OWNER eventsphere_user;
+
+GRANT ALL PRIVILEGES ON DATABASE eventsphere_db TO eventsphere_user;
+
+\c eventsphere_db
+
+ALTER SCHEMA public OWNER TO eventsphere_user;
+
+GRANT ALL ON SCHEMA public TO eventsphere_user;
+
+\q
+```
+
+---
+
+# 🚀 Backend Setup
+
+## 📦 Install Dependencies
+
+```bash
+cd backend
+
+python3 -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+---
+
+## ▶️ Run Backend
+
+```bash
+python3 run.py
+```
+
+Expected:
+
+```txt
+Running on http://127.0.0.1:5000
+```
+
+---
+
+## 🧪 Test Backend
+
+```bash
+curl http://127.0.0.1:5000/
+```
+
+Expected:
+
+```json
+{
+  "message": "EventSphere Backend API Running",
+  "status": "healthy"
+}
 ```
 
 ---
 
 # 🎨 Frontend Setup
 
-## Navigate to Frontend
+Open a second terminal:
 
 ```bash
 cd frontend
-```
 
-## Install Dependencies
-
-```bash
 npm install
-```
 
-## Run Frontend
-
-```bash
 npm run dev
 ```
 
-Frontend runs on:
+Expected:
 
-```bash
+```txt
 http://localhost:5173
 ```
 
 ---
 
-# ⚙️ Backend Setup
+# 🧪 Testing the App
 
-## Navigate to Backend
+## 👤 Regular User
+
+* Register/Login
+* Browse events
+* Search events
+* Save favorite events
+* Set reminders
+* Delete reminders
+* View recommendations
+
+---
+
+## 🎤 Organizer
+
+Use organizer access code:
+
+```txt
+EVENTSPHERE-ORG-2026
+```
+
+Then:
+
+* Create events
+* Submit for approval
+* View organizer dashboard
+
+---
+
+## 🛡️ Admin
+
+Admin can:
+
+* Approve/reject events
+* View analytics dashboard
+* Monitor event statistics
+* Manage pending events
+
+---
+
+# ⏰ Reminder System
+
+EventSphere includes an advanced in-app reminder system.
+
+## ✨ Features
+
+* 🔊 Plays looping sound notifications
+* 📝 Displays saved custom reminder message
+* 📌 Persistent notification until dismissed
+* ❌ Stops only when user presses X
+
+---
+
+## 🧪 Reminder Testing
+
+1. Login
+2. Save an event ❤️
+3. Open Saved Events
+4. Click **Set Reminder**
+5. Set reminder a few minutes in the future
+6. Add a custom reminder note
+7. Keep the app open
+
+When the reminder triggers:
+
+* ⏰ Toast notification appears
+* 🔊 `sound.mp3` loops
+* 📝 Saved message is displayed
+* ❌ User must dismiss it manually
+
+---
+
+## 🔊 Reminder Audio
+
+Place your sound file here:
+
+```txt
+frontend/public/sound.mp3
+```
+
+---
+
+# 🔗 Useful API Tests
+
+## 🔐 Login
 
 ```bash
-cd backend
+curl -X POST http://127.0.0.1:5000/api/auth/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email":"admin@example.com",
+  "password":"your-admin-password"
+}'
 ```
 
-## Create Virtual Environment
+---
+
+## 🎫 Set Token
 
 ```bash
-python3 -m venv venv
+export TOKEN="paste_access_token_here"
 ```
 
-## Activate Virtual Environment
+---
+
+## 👤 Current User
 
 ```bash
-source venv/bin/activate
+curl http://127.0.0.1:5000/api/auth/me \
+-H "Authorization: Bearer $TOKEN"
 ```
 
-## Install Dependencies
+---
+
+## 📊 Analytics
 
 ```bash
-pip install -r requirements.txt
+curl http://127.0.0.1:5000/api/admin/analytics \
+-H "Authorization: Bearer $TOKEN"
 ```
 
 ---
 
-# 🌍 Environment Variables
-
-Create a `.env` file inside the backend folder:
-
-```env
-DATABASE_URL=sqlite:///app.db
-SECRET_KEY=your_secret_key
-
-EVENTBRITE_PRIVATE_TOKEN=your_token
-EVENTBRITE_ORG_ID=your_org_id
-
-TICKETMASTER_API_KEY=your_api_key
-```
-
----
-
-# 🧱 Database Setup
-
-Run migrations:
+## 🎯 Recommendations
 
 ```bash
-flask db upgrade
+curl http://127.0.0.1:5000/api/recommendations \
+-H "Authorization: Bearer $TOKEN"
 ```
 
 ---
 
-# ▶️ Start Backend Server
+## ❤️ Saved Events
 
 ```bash
-python run.py
+curl http://127.0.0.1:5000/api/user/saved-events \
+-H "Authorization: Bearer $TOKEN"
 ```
 
-Backend runs on:
+---
+
+## ⏰ Reminders
 
 ```bash
-http://127.0.0.1:5555
+curl http://127.0.0.1:5000/api/user/saved-events/reminders \
+-H "Authorization: Bearer $TOKEN"
 ```
 
 ---
 
-# 🧪 Testing
+# 👩‍💻 Author
 
-## Backend Testing
+### Samantha Bora
 
-Test API endpoints using:
-- Postman
-- Thunder Client
-- Frontend integration
-
-## Frontend Testing
-
-Verify:
-- authentication
-- event creation
-- event search
-- event filtering
-- saved events
-- API integration
-- responsive design
-
----
-
-# 📈 Development Workflow
-
-SQLite was initially used during backend development because it:
-- simplified local setup
-- enabled faster testing
-- reduced configuration overhead
-
-PostgreSQL is planned for future deployment because it provides:
-- better scalability
-- stronger relational database support
-- improved concurrency handling
-- production-ready database architecture
-
----
-
-# 📌 Current Completed Features
-
-## ✅ Backend
-
-- Authentication system
-- Backend security
-- User models and schemas
-- Shared backend dependencies
-- Saved events system
-- Ticket purchase logic
-- Global exception handling
-- API integrations
-
----
-
-## ✅ Frontend
-
-- Landing page redesign
-- Hero section UI
-- Event grid system
-- Responsive event cards
-- Authentication modal
-- Saved events page
-- Create event form
-- My Events dashboard
-- Source filtering
-- Search functionality
-
----
-
-# 🔮 Future Improvements
-
-- Pagination
-- Cloud deployment
-- Dark mode
-- User profile editing
-- Real-time notifications
-- Event analytics dashboard
-
----
-
-# 👥 Team & Contributions
-
-| Team Member | Contributions |
-|---|---|
-| **Samantha** | Built `App.jsx` and `main.jsx`, managed application state and frontend integration, implemented backend authentication system, configured backend security, created shared dependencies, implemented authentication logic, created user models/schemas, built authentication endpoints, configured backend logging, created backend documentation, environment configuration support, and contributed to UI redesign |
-| **Sharon** | Designed and styled the frontend user interface, created event database models/schemas/repositories, implemented event service logic, built event API endpoints, and contributed recommendation system logic |
-| **Denis** | Implemented Ticketmaster API integration, handled frontend data fetching logic, created ticket database models/schemas/repositories, implemented ticket purchase logic, and built ticket API endpoints |
-| **Engine** | Developed reusable React components, structured frontend component architecture, created saved event database models/schemas/repositories, implemented saved event logic, and built saved events API endpoints |
-
----
-
-# 📜 License
-
-This project was developed for educational purposes.
+Built with ❤️ using React, Flask, and PostgreSQL.
