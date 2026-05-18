@@ -9,7 +9,7 @@ def token_required(f):
     def decorated(*args, **kwargs):
         try:
             verify_jwt_in_request()
-            current_user_id = get_jwt_identity()
+            current_user_id =int(get_jwt_identity())
             current_user = User.query.get(current_user_id)
             
             if not current_user:
