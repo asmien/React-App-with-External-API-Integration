@@ -2,7 +2,7 @@
 
 <div align="center">
 
-### Discover. Save. Organize. Experience.
+### Discover • Save • Organize • Experience
 
 A modern full-stack event discovery and management platform built with **React**, **Flask**, and **PostgreSQL**.
 
@@ -16,7 +16,7 @@ A modern full-stack event discovery and management platform built with **React**
 
 * 🔐 JWT Authentication
 * 👥 Role-based access control
-* 🧑 Regular users
+* 👤 Regular users
 * 🎤 Organizers
 * 🛡️ Admin dashboard
 * 🔑 Organizer secret access code
@@ -102,22 +102,22 @@ EventSphere/
 │   │   └── config.py
 │   │
 │   ├── requirements.txt
-│   └── run.py
+│   ├── run.py
+│   └── venv/
 │
-├── frontend/
-│   ├── public/
-│   │   └── sound.mp3
-│   │
-│   ├── src/
-│   │   ├── components/
-│   │   ├── hooks/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   │
-│   └── package.json
+├── public/
+│   └── sound.mp3
 │
+├── src/
+│   ├── components/
+│   ├── hooks/
+│   ├── services/
+│   ├── utils/
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── package.json
+├── vite.config.js
 └── README.md
 ```
 
@@ -154,20 +154,6 @@ ORGANIZER_SECRET_CODE=EVENTSPHERE-ORG-2026
 
 ---
 
-## 🎨 Frontend `.env`
-
-Create:
-
-```txt
-frontend/.env
-```
-
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
----
-
 # 🗄️ PostgreSQL Setup
 
 ## ▶️ Start PostgreSQL
@@ -186,7 +172,9 @@ sudo -u postgres psql
 
 ---
 
-## 🏗️ Create Database & User
+## 🏗️ First-Time Database Setup
+
+Run these ONLY if the database/user do not already exist.
 
 ```sql
 CREATE USER eventsphere_user WITH PASSWORD 'eventsphere_password';
@@ -197,6 +185,29 @@ CREATE DATABASE eventsphere_db OWNER eventsphere_user;
 
 GRANT ALL PRIVILEGES ON DATABASE eventsphere_db TO eventsphere_user;
 
+\c eventsphere_db
+
+ALTER SCHEMA public OWNER TO eventsphere_user;
+
+GRANT ALL ON SCHEMA public TO eventsphere_user;
+
+\q
+```
+
+---
+
+## ⚠️ If Database Already Exists
+
+If you get errors like:
+
+```txt
+role already exists
+database already exists
+```
+
+Just run:
+
+```sql
 \c eventsphere_db
 
 ALTER SCHEMA public OWNER TO eventsphere_user;
@@ -257,11 +268,9 @@ Expected:
 
 # 🎨 Frontend Setup
 
-Open a second terminal:
+Open a second terminal from the ROOT project folder:
 
 ```bash
-cd frontend
-
 npm install
 
 npm run dev
@@ -353,7 +362,7 @@ When the reminder triggers:
 Place your sound file here:
 
 ```txt
-frontend/public/sound.mp3
+public/sound.mp3
 ```
 
 ---
