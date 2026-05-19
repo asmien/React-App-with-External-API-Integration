@@ -437,6 +437,5 @@ curl http://127.0.0.1:5000/api/user/saved-events/reminders \
 
 # 👩‍💻 Author
 
-### Samantha Bora
 
 Built with ❤️ using React, Flask, and PostgreSQL.
